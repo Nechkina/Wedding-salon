@@ -1,0 +1,475 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Linq="clr-namespace:System.Xml.Linq;assembly=System.Xml.Linq" 
+        xmlns:CourseWorkClassLibrary="clr-namespace:CourseWorkClassLibrary;assembly=CourseWorkClassLibrary" 
+        x:Name="MainForm" 
+        x:Class="WPF_CourseWork.MainWindow"
+        Title="Мережа салонів &quot;Wedding secrets&quot;" 
+        Width="670"  Height="550"
+        WindowStartupLocation="CenterScreen"    
+        WindowState="Maximized" 
+        Loaded="MainForm_Loaded" Icon="Logo_PT.ico">
+
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FF2C3085"/>
+            <GradientStop Color="#FFB09595" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Window.Resources>
+        <Style x:Key="DataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+            <Setter Property="ValidationErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBlock Foreground="Red" Margin="2,0,0,0" Text="!" VerticalAlignment="Center"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridRow}">
+                        <SelectiveScrollingGrid Margin="0,1,0,0" Background="{TemplateBinding Background}">
+                            <SelectiveScrollingGrid.Resources>
+                                <Storyboard x:Key="DetailsVisibleTransition">
+                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetName="DetailsPresenter" Storyboard.TargetProperty="ContentHeight"/>
+                                </Storyboard>
+                            </SelectiveScrollingGrid.Resources>
+                            <SelectiveScrollingGrid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </SelectiveScrollingGrid.ColumnDefinitions>
+                            <SelectiveScrollingGrid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </SelectiveScrollingGrid.RowDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0"/>
+                                        <VisualTransition From="Normal" GeneratedDuration="00:00:00.3000000" To="MouseOver"/>
+                                        <VisualTransition From="MouseOver" GeneratedDuration="00:00:00.5000000" To="Normal"/>
+                                        <VisualTransition From="Normal" GeneratedDuration="00:00:00.3000000" To="MouseOver_Selected"/>
+                                        <VisualTransition From="MouseOver_Selected" GeneratedDuration="00:00:00.5000000" To="Normal"/>
+                                        <VisualTransition From="Normal" GeneratedDuration="00:00:00.3000000" To="Normal_Selected"/>
+                                        <VisualTransition From="Normal_Selected" GeneratedDuration="00:00:00.5000000" To="Normal"/>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Normal_AlternatingRow" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                                       Duration="00:00:00.0010000"
+                                                                       Storyboard.TargetName="HoverRectangle"
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Normal_Selected">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                                       Duration="00:00:00.0010000"
+                                                                       Storyboard.TargetName="SelectedRectangle"
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="MouseOver_Selected">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                                       Duration="00:00:00.0010000"
+                                                                       Storyboard.TargetName="HoverRectangle"
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                                       Duration="00:00:00.0010000"
+                                                                       Storyboard.TargetName="SelectedRectangle"
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unfocused_Selected">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                                       Duration="00:00:00.0010000"
+                                                                       Storyboard.TargetName="SelectedRectangle"
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="BackgroundRectangle" Grid.ColumnSpan="2" Grid.RowSpan="2" Fill="{StaticResource ControlLightBackground}"/>
+                            <Rectangle x:Name="SelectedRectangle" Fill="{StaticResource ControlActiveBorderBrush}" Opacity="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+                            <Rectangle x:Name="HoverRectangle" Fill="{StaticResource ControlBackgroundPressed}" Opacity="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                            <DataGridRowHeader x:Name="RowHeader" Grid.RowSpan="3" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" 
+                                           Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Row}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                            <DataGridCellsPresenter x:Name="CellsPresenter" Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" 
+                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <DataGridDetailsPresenter x:Name="DetailsPresenter" Grid.Column="1" Grid.Row="1" 
+                                                  SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding AreRowDetailsFrozen, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
+                                                  Visibility="{TemplateBinding DetailsVisibility}"/>
+                        </SelectiveScrollingGrid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ContextMenu x:Key="DataRowEmployeeContextMenu">
+            <MenuItem Header="Редагувати" Click="EmployeeEdit_Click"></MenuItem>
+        </ContextMenu>
+        <ContextMenu x:Key="DataRowShopContextMenu">
+            <MenuItem Header="Редагувати" Click="ShopEdit_Click"></MenuItem>
+        </ContextMenu>
+        <ContextMenu x:Key="DataRowStorageContextMenu">
+            <MenuItem Header="Редагувати" Click="StorageEdit_Click"></MenuItem>
+        </ContextMenu>
+        <ContextMenu x:Key="DataRowOrderContextMenu">
+            <MenuItem Header="Редагувати" Click="OrderEdit_Click"></MenuItem>
+        </ContextMenu>
+        <ContextMenu x:Key="DataRowProductContextMenu">
+            <MenuItem Header="Редагувати" Click="ProductEdit_Click"></MenuItem>
+        </ContextMenu>
+    </Window.Resources>
+
+    <DockPanel>
+        <DockPanel.Background>
+            <ImageBrush ImageSource="-8-1024x683.jpg"/>
+        </DockPanel.Background>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Name="miDoLogin" FontSize="18" Click="miLogin_Click" Header="Увійти"/>
+            <MenuItem Name="miLogin" FontSize="18" Visibility="Collapsed" Header="{Binding Login}">
+                <MenuItem Header="Профіль" FontSize="18" Click="miProfile_Click">
+                    <MenuItem.Icon>
+                        <Path Stretch="Fill" Fill="{StaticResource FillPath}" Data="{StaticResource userStyle0}" Width="18" Height="18"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Вийти" FontSize="18" Click="miExit_Click">
+                    <MenuItem.Icon>
+                        <Path Stretch="Fill" Fill="{StaticResource FillPath}" Data="{StaticResource closeStyle0}" Width="18" Height="18"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="miAdd" FontSize="18" Header="Додати" IsEnabled="False">
+                <MenuItem Header="Додати робітника" FontSize="18" Click="miAddEmployee_Click">
+                    <MenuItem.Icon>
+                        <Path Stretch="Fill" Fill="{StaticResource FillPath}" Data="{StaticResource addStyle0}" Margin="2" Width="18" Height="18"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Додати магазин" FontSize="18" Click="miAddShop_Click">
+                    <MenuItem.Icon>
+                        <Path Stretch="Fill" Fill="{StaticResource FillPath}" Data="{StaticResource addStyle0}" Margin="2" Width="18" Height="18"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Додати склад" FontSize="18" Click="miAddStorage_Click">
+                    <MenuItem.Icon>
+                        <Path Stretch="Fill" Fill="{StaticResource FillPath}" Data="{StaticResource addStyle0}" Margin="2" Width="18" Height="18"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Додати замовлення" FontSize="18" Click="miAddOrder_Click">
+                    <MenuItem.Icon>
+                        <Path Stretch="Fill" Fill="{StaticResource FillPath}" Data="{StaticResource addStyle0}" Margin="2" Width="18" Height="18"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Додати товар" FontSize="18" Click="miAddProduct_Click">
+                    <MenuItem.Icon>
+                        <Path Stretch="Fill" Fill="{StaticResource FillPath}" Data="{StaticResource addStyle0}" Margin="2" Width="18" Height="18"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="miRemove" Header="Видалити" FontSize="18" Click="miRemove_Click" IsEnabled="False"/>
+        </Menu>
+        <TabControl x:Name="tabControl" DockPanel.Dock="Top" IsEnabled="False">
+            <TabItem x:Name="tiWorkers" Header="Робітники" FontSize="18">
+                <DataGrid x:Name="dgWorkers" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}">
+                            <Setter Property="ContextMenu" Value="{StaticResource DataRowEmployeeContextMenu}"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ім'я" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Місце роботи" Binding="{Binding Job}"/>
+                        <DataGridTextColumn Header="Посада" Binding="{Binding Position}"/>
+                        <DataGridTextColumn Header="Дата народження" Binding="{Binding Birthday}"/>
+                        <DataGridTextColumn Header="Адреса" Binding="{Binding Address}"/>
+                        <DataGridTextColumn Header="Мобільний телефон" Binding="{Binding MobilePhone}"/>
+                        <DataGridTextColumn Header="Домашній телефон" Binding="{Binding HomePhone}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem x:Name="tiShops" Header="Магазини" FontSize="18">
+                <DataGrid x:Name="dgShops" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}">
+                            <Setter Property="ContextMenu" Value="{StaticResource DataRowShopContextMenu}"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Назва" Binding="{Binding Value.Name}"/>
+                        <DataGridTextColumn Header="Розташування" Binding="{Binding Value.Location}"/>
+                        <DataGridTextColumn Header="Кількість робітників" Binding="{Binding Value.CountEmployee}"/>
+                    </DataGrid.Columns>
+
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <DataGrid Name="dgProductsInPlaceTrading"  ItemsSource="{Binding ProductsInPlacesTrading}" DataContext="{Binding Value}" Margin="5" AutoGenerateColumns="False" RowStyle="{StaticResource DataGridRowStyle}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Назва" Binding="{Binding Product.Name}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Ціна" Binding="{Binding Product.Price}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Кількість" Binding="{Binding Count}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <StackPanel Grid.Column="1">
+                                    <ComboBox Name="cbProducts" Loaded="lvProducts_Loaded" VerticalAlignment="Top">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Button Tag="{Binding ElementName=cbProducts, Path=SelectedItem.Value}" DataContext="{Binding ElementName=dgProductsInPlaceTrading}" Content="Додати товар" Click="btnAddProduct_Click" HorizontalAlignment="Stretch" Padding="7" VerticalAlignment="Bottom" Margin="5"/>
+                                </StackPanel>
+
+                                <DataGrid Grid.Column="2" Margin="8" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Value.EmployeeList}">
+                                    <DataGrid.Resources>
+                                        <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}"></Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Ім'я" Binding="{Binding Name}"/>
+                                        <DataGridTextColumn Header="Посада" Binding="{Binding Position}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem x:Name="tiStorages" Header="Склади" FontSize="18">
+                <DataGrid x:Name="dgStorages" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}">
+                            <Setter Property="ContextMenu" Value="{StaticResource DataRowStorageContextMenu}"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Назва" Binding="{Binding Value.Name}"/>
+                        <DataGridTextColumn Header="Розташування" Binding="{Binding Value.Location}"/>
+                        <DataGridTextColumn Header="Площа" Binding="{Binding Value.Area}"/>
+                        <DataGridTextColumn Header="Кількість робітників" Binding="{Binding Value.CountEmployee}"/>
+                    </DataGrid.Columns>
+
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <DataGrid Name="dgProductsInPlaceTrading" ItemsSource="{Binding ProductsInPlacesTrading}" DataContext="{Binding Value}" Margin="5" AutoGenerateColumns="False" RowStyle="{StaticResource DataGridRowStyle}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Назва" Binding="{Binding Product.Name}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Ціна" Binding="{Binding Product.Price}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Кількість" Binding="{Binding Count}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <StackPanel Grid.Column="1">
+                                    <ComboBox Name="cbProducts" Loaded="lvProducts_Loaded" VerticalAlignment="Top">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Value}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Button Tag="{Binding ElementName=cbProducts, Path=SelectedItem.Value}" DataContext="{Binding ElementName=dgProductsInPlaceTrading}" Content="Додати товар" Click="btnAddProduct_Click" HorizontalAlignment="Stretch" Padding="7" VerticalAlignment="Bottom" Margin="5"/>
+                                </StackPanel>
+
+                                <DataGrid Grid.Column="2" Margin="8" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Value.EmployeeList}">
+                                    <DataGrid.Resources>
+                                        <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}"></Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Ім'я" Binding="{Binding Name}"/>
+                                        <DataGridTextColumn Header="Посада" Binding="{Binding Position}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem x:Name="tiOrders" Header="Замовлення" FontSize="18">
+                <DataGrid x:Name="dgOrders" AutoGenerateColumns="False" IsReadOnly="True" RowDetailsVisibilityMode="Collapsed">
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}">
+                            <Setter Property="ContextMenu" Value="{StaticResource DataRowOrderContextMenu}"/>
+                            <EventSetter Event="DataGridRow.MouseDoubleClick" Handler="Row_DoubleClick"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ім'я покупця" Binding="{Binding CustomerName}"/>
+                        <DataGridTextColumn Header="Адрес" Binding="{Binding Address}"/>
+                        <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
+                        <DataGridTextColumn Header="E-mail" Binding="{Binding E_mail}"/>
+                        <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
+                        <DataGridCheckBoxColumn Header="Самовивіз" Binding="{Binding Status}"/>
+                    </DataGrid.Columns>
+
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <ListView Name="lvChoose" ItemsSource="{Binding PurchasedProducts}" Margin="5" Loaded="lvChoose_Loaded">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="Назва" DisplayMemberBinding="{Binding Key.Name}"/>
+                                            <GridViewColumn Header="Ціна" DisplayMemberBinding="{Binding Key.Price}"/>
+                                            <GridViewColumn Header="Кількість" DisplayMemberBinding="{Binding Value}"/>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+
+                                <Button Grid.Column="1" Content="Замовлення виконано" Click="btnComplete_Click" HorizontalAlignment="Left" Padding="7" VerticalAlignment="Center" Margin="5"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem x:Name="tiProducts" Header="Товари" FontSize="18">
+                <DataGrid x:Name="dgProducts" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}">
+                            <Setter Property="ContextMenu" Value="{StaticResource DataRowProductContextMenu}"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Назва" Binding="{Binding Value.Name}"/>
+                        <DataGridTextColumn Header="Ціна" Binding="{Binding Value.Price}"/>
+                        <DataGridTextColumn Header="Виробник" Binding="{Binding Value.Manufacturer}"/>
+                        <DataGridTextColumn Header="Країна" Binding="{Binding Value.CountryManufacturer}"/>
+                        <DataGridTextColumn Header="Штрих-код" Binding="{Binding Value.Barcode}"/>
+                        <DataGridTextColumn Header="На складах" Binding="{Binding Value.CountInStorages}"/>
+                        <DataGridTextColumn Header="В магазинах" Binding="{Binding Value.CountInShops}"/>
+                    </DataGrid.Columns>
+
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Margin="5,5,5,0" Padding="8" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF32EBFB" FontFamily="Exo Condensed &amp; Expanded" ClipToBounds="True" Text="Магазини">
+                                    <TextBlock.Background>
+                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                            <GradientStop Color="#FF605F5F" Offset="0"/>
+                                            <GradientStop Color="#FF030303" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </TextBlock.Background>
+                                </TextBlock>
+                                
+                                <DataGrid Margin="8" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Value.ShopsList}" Grid.Row="1">
+                                    <DataGrid.Resources>
+                                        <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}"></Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Ім'я" Binding="{Binding PlaceTrading.Name}"/>
+                                        <DataGridTextColumn Header="Кількість" Binding="{Binding Count}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <TextBlock Margin="5,5,5,0" Padding="8" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF32EBFB" FontFamily="Exo Condensed &amp; Expanded" ClipToBounds="True" Grid.Column="1" Text="Склади">
+                                    <TextBlock.Background>
+                                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                            <GradientStop Color="#FF605F5F" Offset="0"/>
+                                            <GradientStop Color="#FF030303" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </TextBlock.Background>
+                                </TextBlock>
+                                
+                                <DataGrid Grid.Column="1" Margin="8" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Value.StoragesList}" Grid.Row="1">
+                                    <DataGrid.Resources>
+                                        <Style BasedOn="{StaticResource DataGridRowStyle}" TargetType="{x:Type DataGridRow}"></Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Ім'я" Binding="{Binding PlaceTrading.Name}"/>
+                                        <DataGridTextColumn Header="Кількість" Binding="{Binding Count}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+        <StatusBar VerticalAlignment="Bottom" FontSize="16">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Кількість елементів: "/>
+                    <TextBlock Text="{Binding ElementName=tabControl, Path=SelectedItem.Content.Items.Count}"></TextBlock>
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem>
+                <StackPanel DataContext="{Binding ElementName=tabControl, Path=SelectedItem.Content.SelectedItems.Count}" Orientation="Horizontal">
+                    <TextBlock Text="Вибрано: "/>
+                    <TextBlock Text="{Binding}"/>
+                    <TextBlock>
+                        <TextBlock.Style>
+                            <Style>
+                                <Setter Property="TextBlock.Text" Value=" елементів"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding}" Value="1">
+                                        <Setter Property="TextBlock.Text" Value=" елемент"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+    </DockPanel>
+</Window>
+    

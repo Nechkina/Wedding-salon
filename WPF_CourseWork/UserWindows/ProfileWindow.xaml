@@ -1,0 +1,136 @@
+﻿<Window x:Class="WPF_CourseWork.ProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:CourseWorkClassLibrary="clr-namespace:CourseWorkClassLibrary;assembly=CourseWorkClassLibrary" 
+        Title="Облікові записи" Height="450.989" Width="476.027" 
+        SizeToContent="Height" WindowStyle="ToolWindow" Loaded="Window_Loaded" Icon="/WPF_CourseWork;component/Logo_PT.ico" Background="#FF1F371D">
+
+    <Grid Margin="0,0,69.6,-0.4">
+        <TabControl Margin="0,0,-67,0">
+            <TabControl.Background>
+                <ImageBrush ImageSource="/WPF_CourseWork;component/6.jpg"/>
+            </TabControl.Background>
+            <TabItem Name="tiCurrentUser" Header="{Binding Login}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel VerticalAlignment="Center" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" FontSize="18">Ім'я :</TextBlock>
+                            <TextBlock VerticalAlignment="Center" Margin="7" Text="{Binding Name}" FontSize="18"/>
+                        </StackPanel>
+                        <StackPanel Name='spName' Orientation="Horizontal" Visibility="Collapsed">
+                            <TextBlock VerticalAlignment="Center" FontSize="18">Нове ім'я</TextBlock>
+                            <TextBox VerticalAlignment="Center" Margin="7" Text="{Binding Name}" FontSize="18" Width="240"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <ToggleButton Grid.Column="1" Content="Змінити ім'я" Padding="10" VerticalAlignment="Center" Margin="5,6,5,7.6" Checked="tbtnName_Checked" Unchecked="tbtnName_Unchecked"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="5">
+                        <TextBlock VerticalAlignment="Center" FontSize="18">Тип облікового запису :</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="7" Text="{Binding Status}" FontSize="18"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" VerticalAlignment="Center" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" FontSize="18">Логін :</TextBlock>
+                            <TextBlock VerticalAlignment="Center" Margin="7" Text="{Binding Login}" FontSize="18"/>
+                        </StackPanel>
+                        <StackPanel Name="spLogin" Orientation="Horizontal" Visibility="Collapsed">
+                            <TextBlock VerticalAlignment="Center" FontSize="18">Новий логін</TextBlock>
+                            <TextBox VerticalAlignment="Center" Margin="7" Text="{Binding Login}" FontSize="18" Width="218"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <ToggleButton Grid.Column="1" Grid.Row="2" Content="Змінити логін" Padding="10" VerticalAlignment="Center" Margin="5" Checked="tbtnLogin_Checked" Unchecked="tbtnLogin_Unchecked"/>
+
+                    <StackPanel Name="spPass" Grid.Row="3" Margin="5" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" FontSize="18">Старий пароль</TextBlock>
+                            <PasswordBox Name="pbOldPass" VerticalAlignment="Center" Margin="7" FontSize="18" Width="193"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" FontSize="18">Новий пароль</TextBlock>
+                            <PasswordBox Name="pbNewPass" VerticalAlignment="Center" Margin="12,7,7,7" FontSize="18" Width="193"/>
+                        </StackPanel>
+                        <TextBlock Name="tblOutputPass" Foreground="Red" Visibility="Collapsed"/>
+                    </StackPanel>
+
+                    <ToggleButton Grid.Column="1" Grid.Row="3" Content="Змінити пароль" Padding="10" Margin="5" Checked="tbtnPass_Checked" Unchecked="tbtnPass_Unchecked" VerticalAlignment="Center"/>
+                </Grid>
+            </TabItem>
+            <TabItem Name="tiOther" Header="Інші облікові записи">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Облік. запис" VerticalAlignment="Center" FontSize="18" Margin="7" ></TextBlock>
+                        <ComboBox Name="cbAccounts" Margin="7" VerticalAlignment="Center" Width="153"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="1" Margin="8" Padding="7" Content="Видалити обліковий запис" Click="btnRemove_Click"></Button>
+
+                    <Separator Grid.Column="2" VerticalAlignment="Bottom" Background="#FF32EBFB"></Separator>
+
+                    <StackPanel Grid.Row="3" Orientation="Horizontal">
+                        <TextBlock Text="Тип облік. зап." VerticalAlignment="Center" FontSize="18" Margin="7"></TextBlock>
+                        <ComboBox Name="cbChangeStatus" Margin="7" VerticalAlignment="Center" Width="136">
+                            <ComboBoxItem Content="Адмін" IsSelected="True"/>
+                            <ComboBoxItem Content="Користувач"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <Button Grid.Row="3" Grid.Column="1" Margin="8" Padding="7" Content="Змінити тип запису" VerticalAlignment="Center" Click="btnChange_Click"/>
+
+                    <Separator Grid.Row="4" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Background="#FF32EBFB"></Separator>
+
+                    <StackPanel Grid.Row="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Логін" VerticalAlignment="Center" FontSize="18" Margin="7"></TextBlock>
+                            <TextBox Name="tbLogin" Margin="25,7,7,7" VerticalAlignment="Center" Width="192"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Пароль" VerticalAlignment="Center" FontSize="18" Margin="7"></TextBlock>
+                            <PasswordBox Name="pbPass" Margin="7" VerticalAlignment="Center" Width="192"></PasswordBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Тип облік. зап." VerticalAlignment="Center" FontSize="18" Margin="7"></TextBlock>
+                            <ComboBox Name="cbStatus" Margin="7" VerticalAlignment="Center" Width="136">
+                                <ComboBoxItem Content="Адмін" IsSelected="True"/>
+                                <ComboBoxItem Content="Користувач"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Button Grid.Row="5" Grid.Column="1" Margin="8" Padding="7" Content="Створити обліковий запис" VerticalAlignment="Center" Click="btnCreate_Click"/>
+
+                    <TextBlock Name="tblOutputOther" Grid.Row="6" VerticalAlignment="Center" Foreground="Red" Margin="10" Grid.ColumnSpan="2" HorizontalAlignment="Center" Visibility="Collapsed" TextWrapping="Wrap"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

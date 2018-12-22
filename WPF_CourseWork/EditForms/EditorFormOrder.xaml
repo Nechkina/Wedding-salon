@@ -1,0 +1,93 @@
+﻿<Window x:Class="WPF_CourseWork.EditForms.EditorFormOrder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        Height="460" Width="750" 
+        Icon="/WPF_CourseWork;component/Logo_PT.ico" 
+        Title="Редактор даних"
+        SizeToContent="Height" ShowInTaskbar="True" Closing="Window_Closing">
+
+    <Window.Background>
+        <ImageBrush ImageSource="/WPF_CourseWork;component/4.jpg"/>
+    </Window.Background>
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextBlock.Foreground" Value="#FF32EBFB"/>
+            <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+            <Setter Property="TextBlock.HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextBlock.FontSize" Value="18"/>
+            <Setter Property="TextBlock.FontFamily" Value="Exo Condensed &amp; Expanded"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="0,10" VerticalAlignment="Center">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="330*"/>
+            <ColumnDefinition Width="205*"/>
+            <ColumnDefinition Width="10*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Name="tblName" Width="119" Foreground="#FF073080" FontWeight="Bold" Grid.ColumnSpan="2" Margin="11,13,15.6,13">Ім'я покупця</TextBlock>
+        <TextBox Name="tbName" Grid.Column="2" Margin="7" MaxWidth="400" Text="{Binding CustomerName, Mode=OneWay}"/>
+
+        <TextBlock Name="tblEmail" Grid.Column="1" Grid.Row="1" Foreground="#FF073080" FontWeight="Bold">Е-mail</TextBlock>
+        <TextBox Name="tbEmail" Grid.Row="1" Grid.Column="2" Margin="7" MaxWidth="400" Text="{Binding E_mail, Mode=OneWay}"/>
+
+        <TextBlock Name="tblPhone" Grid.Column="1" Grid.Row="2" Foreground="#FF073080" FontWeight="Bold">Телефон</TextBlock>
+        <TextBox Name="tbPhone" Grid.Row="2" Grid.Column="2" Margin="7" MaxWidth="400" Text="{Binding Phone, Mode=OneWay}"/>
+
+        <TextBlock Name="tblDelivMethod" Grid.Column="1" Grid.Row="3" Foreground="#FF073080" FontWeight="Bold">Спосіб доставки</TextBlock>
+        <DockPanel Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <RadioButton Name="rbDelivMethodSelf" Foreground="#FF073080" Margin="12" FontSize="18" Click="rbDelivMethodAdress_Checked" VerticalAlignment="Center"  IsChecked="True" HorizontalAlignment="Left" Content="Самовивіз" FontWeight="Bold"/>
+            <RadioButton Name="rbDelivMethod" Foreground="#FF073080" Margin="12" Grid.Row="4" FontSize="18" Click="rbDelivMethodSelf_Checked" VerticalAlignment="Center" HorizontalAlignment="Right" IsChecked="{Binding IsDelivery}" Content="Доставка по адресу" Background="#FFFDF4C0" FontWeight="Bold"/>
+        </DockPanel>
+
+        <StackPanel Name="spPT"  Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden">
+            <TextBlock Name="tblPT" Grid.Column="1" Grid.Row="1" Margin="10">Адрес магазину або складу</TextBlock>
+            <ComboBox Name="cpPT" Grid.Row="1" Grid.Column="2" MinWidth="300" MaxWidth="400" Margin="3"/>
+        </StackPanel>
+
+        <StackPanel Name="spAdress" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" DataContext="{Binding ElementName=rbDelivMethod, Path=IsChecked}">
+            <TextBlock Name="tblAdress" Grid.Column="1" Grid.Row="1" Margin="10">Адрес доставки</TextBlock>
+            <TextBox Name="tbAdress" Grid.Row="1" Grid.Column="2" MinWidth="300" MaxWidth="400" Margin="3"/>
+        </StackPanel>
+
+        <TextBlock FontSize="15" Grid.Column="3" VerticalAlignment="Top" Margin="5" Height="18" FontWeight="Bold" Foreground="#FF073080">Вибрані товари</TextBlock>
+
+        <ListView Name="lvChoose" ItemsSource="{Binding ElementName=lbProducts, Path=SelectedItems}" Grid.Column="3" Margin="5,23,5,5" Grid.RowSpan="3" Loaded="lvChoose_Loaded" Background="#FF252221">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Назва" DisplayMemberBinding="{Binding Path=Name}"/>
+                    <GridViewColumn Header="Ціна" DisplayMemberBinding="{Binding Path=Price}"/>
+                    <GridViewColumn Header="Кількість">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Name="tbCount" Text="1" Width="54" PreviewTextInput="tbCount_PreviewTextInput"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <TextBlock FontSize="15" Grid.Column="3" Grid.Row="3" VerticalAlignment="Top" Margin="50,3,49.8,0" Height="18" FontWeight="Bold" Foreground="#FF073080">Список товарів</TextBlock>
+        <ListBox Name="lbProducts" Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" Margin="5,23,5,5" MinWidth="200" MinHeight="100" SelectionMode="Multiple" Background="#FF252221"/>
+
+        <TextBlock Name="tbErrors" TextWrapping="WrapWithOverflow" Foreground="#FFFA371E" FontSize="15" Grid.Row="5" Grid.ColumnSpan="5" Margin="7"/>
+
+        <Button Name="btn" Grid.Row="7" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Center" IsDefault="True" Padding="6" Margin="5" Grid.ColumnSpan="5" Foreground="#FF073080" Background="#FFF3D0B2" FontWeight="Bold">Додати новий запис</Button>
+    </Grid>
+</Window>
